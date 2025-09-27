@@ -14,8 +14,19 @@ connectDB();
 const app = express();
 
 // CORS for React frontend
+const allowedOrigins = [
+  'https://navachethana2025tripbca.netlify.app',
+  'https://68d8142bf81d73000862b662--navachethana2025tripbca.netlify.app'
+];
+
 app.use(cors({
-  origin:process.env.FRONTEND_URL,
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true); // allow non-browser requests
+    if(allowedOrigins.indexOf(origin) === -1){
+      return callback(new Error('CORS not allowed for this origin'), false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 
